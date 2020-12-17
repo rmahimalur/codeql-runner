@@ -37,12 +37,12 @@ pipeline {
           container('codeql'){
              sh"""
              cd codeql-runner
-             codeql-runner-linux init --languages java --config-file .github/codeql/codeql-config.yml --codeql-path /opt/codeql/codeql --repository rmahimalur/codeql-runner --github-url https://github.com --github-auth 3a430525d8fbd7ba31f4fc50994cbe0f779a8182
+             codeql-runner-linux init --languages java --config-file .github/codeql/codeql-config.yml --codeql-path /opt/codeql/codeql --repository rmahimalur/codeql-runner --github-url https://github.com --github-auth 76c4f99232666938ffe6708fe7022040e06032b8
              """
           }
         }
       }
-    stage('moitor and build') {
+    stage('monitor and build') {
       steps {
           container('codeql'){
              sh"""
@@ -59,7 +59,9 @@ pipeline {
           container('codeql'){
              sh"""
              cd codeql-runner
-             codeql-runner-linux analyze --repository rmahimalur/codeql-runner --github-url https://github.com --github-auth 3a430525d8fbd7ba31f4fc50994cbe0f779a8182 --commit 68229a048ce1297a8eac1fc144d43d8b0823559f --ref refs/heads/main
+             mkdir -p /tmp/scan-results
+             codeql-runner-linux analyze --repository rmahimalur/codeql-runner --github-url https://github.com --commit 14a56aba645b51488c9c98758c7c2ebecb4177da  --github-auth cf4f2f1c6b56bef90d56d7deb438a08cb4c65b00 --output-dir /tmp/scan-results --ref refs/heads/main
+             ls -al /tmp/scan-results
              """
           }
         }
